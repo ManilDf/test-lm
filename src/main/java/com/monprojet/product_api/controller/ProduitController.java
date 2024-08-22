@@ -3,6 +3,7 @@ package com.monprojet.product_api.controller;
 import com.monprojet.product_api.entity.Produit;
 import com.monprojet.product_api.repository.ProduitRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ProduitController {
     }
 
     @PostMapping
-    public Produit createProduit(@RequestBody Produit produit) {
+    public Produit createProduit(@Validated @RequestBody Produit produit) {
         return produitRepository.save(produit);
     }
 
