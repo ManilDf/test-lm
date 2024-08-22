@@ -54,6 +54,37 @@ public class ProduitControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nom").value("Produit 17"));
     }
 
+    @Test
+    void testCreateProduitWithNegativePrice() throws Exception {
+
+        String produitJson = "{\"nom\": \"Produit D\", \"prix\": -50}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/produits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(produitJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreateProduitWithNullPrice() throws Exception {
+        String produitJson = "{\"nom\": \"Produit E\", \"prix\":}";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/produits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(produitJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreateProduitWithEmptyName() throws Exception {
+        String produitJson = "{\"nom\": \"\", \"prix\": 50.0}";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/produits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(produitJson))
+                .andExpect(status().isBadRequest());
+    }
+
+
 
 }
 
