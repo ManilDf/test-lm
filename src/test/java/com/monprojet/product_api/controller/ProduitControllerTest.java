@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -38,6 +40,20 @@ public class ProduitControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nom").value("Produit 1"));
     }
+
+    @Test
+    void createProduit() throws Exception {
+
+        Produit produit = new Produit("17", "Produit 17", 30.0);
+        when(produitRepository.save(produit)).thenReturn(produit);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/produits")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": \"17\", \"nom\": \"Produit 17\", \"prix\": 30.0}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nom").value("Produit 17"));
+    }
+
 
 }
 
